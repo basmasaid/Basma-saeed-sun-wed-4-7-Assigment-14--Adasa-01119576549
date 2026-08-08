@@ -1,0 +1,189 @@
+<section class="relative bg-[#09090b] text-white py-24 px-4 text-center border-b border-gray-800/50 overflow-hidden">
+    <div
+        class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#FF6A00]/15 via-transparent to-transparent opacity-80 pointer-events-none">
+    </div>
+    <div
+        class="absolute inset-0 bg-[linear-gradient(to_right,#1f1f2315_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2315_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none">
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+        <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1c120c] border border-[#FF6A00]/40 text-xs text-[#FF6A00] font-medium mb-6">
+            <i class="fa-regular fa-newspaper text-xs"></i>
+            <span>مدونتنا</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-[#FF6A00]"></span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl font-black text-white mb-5 tracking-tight">
+            <span class="text-[#FF6A00]">استكشف</span> مقالاتنا
+        </h1>
+
+        <p class="text-gray-400 text-base sm:text-lg max-w-2xl leading-relaxed">
+            اكتشف الدروس والرؤى وأفضل الممارسات للتطوير الحديث
+        </p>
+    </div>
+</section>
+
+
+
+
+<div class="sticky top-[72px] z-30 bg-[#0b0b0b]/90 backdrop-blur-md border-b border-gray-800/50 py-4 px-4 shadow-2xl transition-all">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+
+        
+        <div class="relative w-full md:w-80">
+            <input type="text" 
+                   [(ngModel)]="searchTerm"
+                   (ngModelChange)="onSearchChange()"
+                   placeholder="ابحث في المقالات..."
+                   class="w-full bg-[#161616] border border-gray-800/80 rounded-xl py-2.5 pr-10 pl-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF6A00] hover:border-[#FF6A00]/50 transition-all">
+            
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </span>
+        </div>
+
+        
+        <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+            
+            
+            <button (click)="selectCategory('الكل')"
+                    [class]="selectedCategory === 'الكل' 
+                      ? 'px-5 py-2 rounded-xl text-sm font-medium bg-[#FF6A00] text-white shadow-lg shadow-[#FF6A00]/20 border border-[#FF6A00] whitespace-nowrap cursor-pointer transition-all' 
+                      : 'px-4 py-2 rounded-xl text-sm font-medium bg-[#161616] text-gray-400 border border-transparent hover:border-[#FF6A00] hover:text-white transition-all duration-300 whitespace-nowrap cursor-pointer'">
+                جميع المقالات
+            </button>
+
+           
+            @for (cat of categories; track cat.id) {
+                <button (click)="selectCategory(cat.name)"
+                        [class]="selectedCategory === cat.name 
+                          ? 'px-5 py-2 rounded-xl text-sm font-medium bg-[#FF6A00] text-white shadow-lg shadow-[#FF6A00]/20 border border-[#FF6A00] whitespace-nowrap cursor-pointer transition-all' 
+                          : 'px-4 py-2 rounded-xl text-sm font-medium bg-[#161616] text-gray-400 border border-transparent hover:border-[#FF6A00] hover:text-white transition-all duration-300 whitespace-nowrap cursor-pointer'">
+                    {{ cat.name }}
+                </button>
+            }
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<section class="bg-[#0b0b0b] text-white py-8 px-4 min-h-screen">
+
+    <div class="flex items-center justify-between pt-3 border-t border-gray-800/40 text-sm py-8">
+        <div class="text-gray-400 font-medium">
+            عرض <span class="text-white font-bold">{{ items.length }}</span> مقالات
+        </div>
+
+        <div class="flex items-center gap-1.5 p-1 bg-[#161616] rounded-xl border border-gray-800/60">
+            <button class="p-2 rounded-lg bg-[#FF6A00] text-white shadow-md transition-all cursor-pointer"
+                title="عرض شبكي">
+                <i class="fa-solid fa-border-all text-xs"></i>
+            </button>
+            <button class="p-2 rounded-lg text-gray-400 hover:text-white transition-colors cursor-pointer"
+                title="عرض قائمة">
+                <i class="fa-solid fa-bars text-xs"></i>
+            </button>
+        </div>
+    </div>
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+        @for (item of paginatedItems; track item.id) {
+        <div [routerLink]="['/blog', item.id]"
+            class="bg-[#161616] border border-gray-800/80 rounded-2xl overflow-hidden group transition-all duration-300 ease-out hover:-translate-y-3 hover:border-[#FF6A00]/60 hover:shadow-2xl hover:shadow-[#FF6A00]/10 flex flex-col justify-between cursor-pointer will-change-transform">
+            <div>
+                <div class="relative h-56 overflow-hidden">
+                    <img [src]="item.image" [alt]="item.title"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <span
+                        class="absolute top-3 right-3 bg-black/70 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full border border-white/10 font-medium">
+                        {{ item.category }}
+                    </span>
+                </div>
+
+                <div class="p-5">
+                    <div class="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                        <span>⏱ {{ item.readTime }}</span>
+                        <span>•</span>
+                        <span>{{ item.date }}</span>
+                    </div>
+                    <h3
+                        class="text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-[#FF6A00] transition-colors">
+                        {{ item.title }}
+                    </h3>
+                    <p class="text-gray-400 text-sm line-clamp-2">
+                        {{ item.excerpt }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-5 pt-0 flex items-center justify-between border-t border-gray-800/40 mt-4">
+                <div class="flex items-center gap-3 pt-3">
+                    <img [src]="item.author.avatar" [alt]="item.author.name"
+                        class="w-9 h-9 rounded-full object-cover border border-gray-700">
+                    <div>
+                        <h4 class="text-sm font-semibold text-white">{{ item.author.name }}</h4>
+                        <p class="text-xs text-gray-400">{{ item.author.role }}</p>
+                    </div>
+                </div>
+                <div
+                    class="w-8 h-8 rounded-full bg-[#2E1E14] group-hover:bg-[#FF6A00] text-[#FF6A00] group-hover:text-white flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-arrow-left-long"></i>
+                </div>
+            </div>
+        </div>
+        }
+
+    </div>
+
+
+    <div class="flex justify-center items-center">
+        <div class="flex flex-col items-center justify-center gap-3 py-8">
+
+            <div
+                class="inline-flex items-center gap-2 bg-[#161616] p-2 rounded-2xl border border-gray-800/80 shadow-lg">
+
+
+                <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-[#222] text-gray-400 border border-transparent hover:border-[#FF6A00] hover:text-white transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+
+                @for (page of pageNumbers; track page) {
+                <button (click)="changePage(page)"
+                    [class]="page === currentPage ? 'bg-[#FF6A00] text-white font-semibold shadow-md shadow-[#FF6A00]/20 border-[#FF6A00]' : 'bg-[#222] text-gray-400 font-medium border-transparent hover:border-[#FF6A00] hover:text-white'"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl text-sm border transition-all duration-300 cursor-pointer">
+                    {{ page }}
+                </button>
+                }
+
+
+                <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-[#222] text-gray-400 border border-transparent hover:border-[#FF6A00] hover:text-white transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+            </div>
+
+
+            <p class="text-xs text-gray-500 font-medium">
+                صفحة <span class="text-gray-300 font-semibold">{{ currentPage }}</span> من <span
+                    class="text-gray-300 font-semibold">{{ totalPages }}</span>
+            </p>
+
+        </div>
+    </div>
+
+</section>
